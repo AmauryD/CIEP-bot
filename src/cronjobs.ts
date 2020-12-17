@@ -1,24 +1,34 @@
-import { CronJob } from "cron";
-import { TextChannel } from "discord.js";
-import { DiscordClient } from "./discordclient";
-import { differenceInMinutes } from "date-fns";
-import { BotConfig } from "./bot-config";
+import {
+    CronJob
+} from "cron";
+import {
+    TextChannel
+} from "discord.js";
+import {
+    DiscordClient
+} from "./discordclient";
+import {
+    differenceInMinutes
+} from "date-fns";
+import {
+    BotConfig
+} from "./bot-config";
 
 
 
 const sendReminder = async () => {
     const actualDate = new Date();
     const reunionDate = new Date();
-    const [day,hours,minutes] = BotConfig.config.reunionTime;
-    reunionDate.setHours(hours,minutes,0,0);
-    const diff = differenceInMinutes(reunionDate,actualDate);
+    const [day, hours, minutes] = BotConfig.config.reunionTime;
+    reunionDate.setHours(hours, minutes, 0, 0);
+    const diff = differenceInMinutes(reunionDate, actualDate);
 
-    if (actualDate.getDay() !== day)  {
+    if (actualDate.getDay() !== day) {
         console.log("not the day");
         return;
     }
 
-    const channel =  await DiscordClient.instance.channels.fetch(BotConfig.config.reunionTagChannelId) as TextChannel;
+    const channel = await DiscordClient.instance.channels.fetch(BotConfig.config.reunionTagChannelId) as TextChannel;
     const tags = `${BotConfig.config.reunionTagRolesIds.map((id) => `<@&${id}>`).join(" ")}`;
     let message;
 
@@ -41,15 +51,13 @@ const sendReminder = async () => {
 
 export default function registerCronJobs() {
     const [reunionDay] = BotConfig.config.reunionTime;
-    const jobs = [
-        {
-            time : `* * * * *`,
-            function : sendReminder
-        }
-    ];
+    const jobs = [{
+        time: `* * * * *`,
+        function: sendReminder
+    }];
 
     for (const job of jobs) {
-        new CronJob(job.time, job.function , null, true, 'Europe/Brussels').start();
+        new CronJob(job.time, job.function, null, true, 'Europe/Brussels').start();
     }
 
 }
