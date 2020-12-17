@@ -6,6 +6,7 @@ export interface BotConfigObject {
     "reunionTagRolesIds" : string[];
     "reunionTagChannelId" : string;
     botUsername : string;
+    commandPrefix : string;
 }
 
 export class BotConfig {

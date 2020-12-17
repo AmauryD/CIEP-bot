@@ -1,4 +1,4 @@
-import Discord from 'discord.js';
+import Discord, { Client } from 'discord.js';
 
 export class DiscordClient {
     private static _client : Discord.Client;
@@ -16,12 +16,12 @@ export class DiscordClient {
         return DiscordClient._client.channels.fetch(id);
     }
 
-    public static async init(token: string) {
+    public static async init(token: string) : Promise<Client> {
         if (DiscordClient._client) {
             throw new Error("Client already initialized");
         }
 
-        const client = DiscordClient._client = new Discord.Client();
+        const client = DiscordClient._client = new Client();
 
         await client.login(token);
 

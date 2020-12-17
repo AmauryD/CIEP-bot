@@ -2,6 +2,7 @@ import { DiscordClient } from "./discordclient";
 import {promises as fs} from "fs";
 import { Message } from "discord.js";
 import { parse } from "discord-command-parser";
+import { BotConfig } from "./bot-config";
 
 export type CommandAction = (args : string[],originalMessage : Message) => Promise<void>;
 
@@ -33,10 +34,14 @@ export class CommandHandler {
     }
 
     async handleCommand(message: Message) {
-        const parsed = parse(message, "!", { allowSpaceBeforeCommand: true });
+        const parsed = parse(message,BotConfig.config.commandPrefix, { allowSpaceBeforeCommand: true });
         if (!parsed.success) return;
         if (this._commands[parsed.command] !== undefined) {
+          try {
             await this._commands[parsed.command].action.call(this,parsed.arguments,message);
+          }catch(e) {
+            await message.channel.send(`${e.message}`);
+          }
         }
     }
 }
