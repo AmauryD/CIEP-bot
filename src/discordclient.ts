@@ -12,7 +12,11 @@ export class DiscordClient {
         return DiscordClient._client;
     }
 
-    static async init(token: string) {
+    public static getChannel(id : string) {
+        return DiscordClient._client.channels.fetch(id);
+    }
+
+    public static async init(token: string) {
         if (DiscordClient._client) {
             throw new Error("Client already initialized");
         }
