@@ -32,11 +32,11 @@ async function init() {
     }
   });
 
-  await listenChannel.send(
-    `Bonjour ! Je suis en ligne !\nN'hésitez pas à m'appeler si vous avez besoin de ${BotConfig.getKey(
-      "commandPrefix"
-    )}help`
-  );
+  // await listenChannel.send(
+  //   `Bonjour ! Je suis en ligne !\nN'hésitez pas à m'appeler si vous avez besoin de ${BotConfig.getKey(
+  //     "commandPrefix"
+  //   )}help`
+  // );
 
   console.log("I'm ready to go");
 }

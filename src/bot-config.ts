@@ -1,4 +1,4 @@
-import { promises as fs } from "fs";
+import dotenv from "dotenv";
 
 export interface BotConfigObject {
   token: string;
@@ -25,8 +25,23 @@ export class BotConfig {
   }
 
   public static async init(): Promise<BotConfigObject> {
-    return (BotConfig._config = JSON.parse(
-      await fs.readFile("./config.json", "utf-8")
-    ));
+    let { parsed, error } = dotenv.config({ path: "config.env" });
+    let config: BotConfigObject = {} as any;
+
+    if (parsed === undefined) {
+      parsed = process.env as any;
+    }
+
+    config.token = parsed!.TOKEN;
+    config.reunionTime = parsed!.REUNION_TIME.split(",").map((el) =>
+      parseInt(el)
+    ) as [number, number, number];
+    config.reunionTagRolesIds = parsed!.REUNION_TAGS.split(",");
+    config.reunionTagChannelId = parsed!.REUNION_CHANNEL_ID;
+    config.botUsername = parsed!.USERNAME;
+    config.commandPrefix = parsed!.COMMAND_PREFIX;
+    config.commandChannel = parsed!.COMMAND_CHANNEL;
+
+    return (BotConfig._config = config);
   }
 }
