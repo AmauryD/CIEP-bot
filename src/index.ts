@@ -22,7 +22,21 @@ async function init() {
   const commandHandler = new CommandHandler(client);
   await commandHandler.init();
 
-  client.on("message", commandHandler.handleCommand.bind(commandHandler));
+  const listenChannel = (await client.channels.fetch(
+    BotConfig.getKey("commandChannel")
+  )) as TextChannel;
+
+  client.on("message", (message) => {
+    if (message.channel.id === listenChannel.id) {
+      commandHandler.handleCommand.bind(commandHandler)(message);
+    }
+  });
+
+  await listenChannel.send(
+    `Bonjour ! Je suis en ligne !\nN'hésitez pas à m'appeler si vous avez besoin de ${BotConfig.getKey(
+      "commandPrefix"
+    )}help`
+  );
 
   console.log("I'm ready to go");
 }
