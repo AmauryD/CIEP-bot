@@ -1,7 +1,7 @@
+import { TextChannel } from "discord.js";
 import { BotConfig } from "./bot-config";
 import { CommandHandler } from "./commandHandler";
 import { DiscordClient } from "./discordclient";
-
 
 /*
   CIEP BOT - by AmauryD
@@ -12,7 +12,7 @@ async function init() {
   const config = await BotConfig.init();
   const client = await DiscordClient.init(config.token);
   const botUser = client.user!;
-  
+
   await botUser.setActivity("Je suis au service du CIEP");
   if (botUser.username !== config.botUsername) {
     await botUser.setUsername(config.botUsername);
@@ -22,7 +22,9 @@ async function init() {
   const commandHandler = new CommandHandler(client);
   await commandHandler.init();
 
-  client.on("message",commandHandler.handleCommand.bind(commandHandler));
+  client.on("message", commandHandler.handleCommand.bind(commandHandler));
+
+  console.log("I'm ready to go");
 }
 
 init();
