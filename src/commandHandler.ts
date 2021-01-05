@@ -1,10 +1,10 @@
 import { DiscordClient } from "./discordclient";
 import {promises as fs} from "fs";
 import { Message } from "discord.js";
-import { parse } from "discord-command-parser";
+import { MessageArgumentReader, parse } from "discord-command-parser";
 import { BotConfig } from "./bot-config";
 
-export type CommandAction = (args : string[],originalMessage : Message) => Promise<void>;
+export type CommandAction = (args : MessageArgumentReader,originalMessage : Message) => Promise<void>;
 
 export interface CommandsObject {
   [key: string]: CommandModule;
@@ -38,7 +38,7 @@ export class CommandHandler {
         if (!parsed.success) return;
         if (this._commands[parsed.command] !== undefined) {
           try {
-            await this._commands[parsed.command].action.call(this,parsed.arguments,message);
+            await this._commands[parsed.command].action.call(this,parsed.reader,message);
           }catch(e) {
             await message.channel.send(`${e.message}`);
           }

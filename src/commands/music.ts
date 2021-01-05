@@ -1,17 +1,25 @@
 import { CommandAction, CommandHandler } from "../commandHandler";
 import path from "path";
 
-export const commandName = "music";
+export const commandName = "hymne";
 
-export const description = "Musique maestro";
+export const description = "Hymne CIEP, la seule, la vraie";
 
-export const action: CommandAction = async function (this: CommandHandler,args,originalMessage) {
+export const action: CommandAction = async function (this: CommandHandler,argsReader,originalMessage) {
   if (!originalMessage.member?.voice.channel) {
-    originalMessage.reply("You must be in a voice channel.");
+    originalMessage.reply("Vous devez être dans un channel audio :).");
     return;
   }
+
+  const isStop = argsReader.getString();
+
+
   if (originalMessage.guild?.me?.voice.channel) {
-    originalMessage.reply("I'm already playing.");
+    if (isStop === "stop") {
+      originalMessage.guild?.me?.voice.channel.leave();
+    }else{
+      await originalMessage.reply("Je suis déjà en train de jouer quelque chose, pour m'arrêter faites la commande suivie de stop");
+    }
     return;
   }
 
