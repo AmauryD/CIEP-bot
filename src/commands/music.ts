@@ -1,7 +1,7 @@
 import { CommandAction, CommandHandler } from "../commandHandler";
 import path from "path";
 
-export const commandName = "hymne";
+export const commandName = "hymne [stop]";
 
 export const description = "Hymne CIEP, la seule, la vraie";
 
