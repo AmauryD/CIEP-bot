@@ -1,7 +1,9 @@
 import { TextChannel } from "discord.js";
 import { BotConfig } from "./bot-config";
 import { CommandHandler } from "./commandHandler";
+import { DatabaseConnection } from "./db-connection";
 import { DiscordClient } from "./discordclient";
+import "reflect-metadata";
 
 /*
   CIEP BOT - by AmauryD
@@ -10,6 +12,7 @@ import { DiscordClient } from "./discordclient";
 */
 async function init() {
   const config = await BotConfig.init();
+  const connection = await DatabaseConnection.connect();
   const client = await DiscordClient.init(config.token);
   const botUser = client.user!;
 
