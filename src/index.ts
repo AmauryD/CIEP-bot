@@ -4,6 +4,7 @@ import { CommandHandler } from "./commandHandler";
 import { DatabaseConnection } from "./db-connection";
 import { DiscordClient } from "./discordclient";
 import "reflect-metadata";
+import { refreshStatesChannel } from "./channel-controller/states";
 
 /*
   CIEP BOT - by AmauryD
@@ -28,6 +29,8 @@ async function init() {
   const listenChannel = (await client.channels.fetch(
     BotConfig.getKey("commandChannel")
   )) as TextChannel;
+
+  await refreshStatesChannel();
 
   client.on("message", (message) => {
     if (message.channel.id === listenChannel.id) {

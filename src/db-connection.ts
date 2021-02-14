@@ -1,5 +1,6 @@
 import { Connection, createConnection } from "typeorm";
 import { State } from "./models/state";
+import { StateChannelMessage } from "./models/state-channel-message";
 
 export class DatabaseConnection {
   private static _connection: Connection | null = null;
@@ -16,7 +17,7 @@ export class DatabaseConnection {
       username: "b390f81023d4d3",
       password: "c8a2dc97",
       database: "heroku_d9e52cf6d1d0619",
-      entities: [State],
+      entities: [State, StateChannelMessage],
       synchronize: true,
     }));
   }

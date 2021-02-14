@@ -1,12 +1,13 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   BaseEntity,
   PrimaryColumn,
   Index,
+  OneToOne,
 } from "typeorm";
 import { Continent } from "../enums/continent";
+import { StateChannelMessage } from "./state-channel-message";
 
 @Entity()
 export class State extends BaseEntity {
@@ -22,7 +23,7 @@ export class State extends BaseEntity {
   @Column("varchar", {
     nullable: true,
   })
-  adjoints!: string;
+  adjoints!: string | null;
 
   @Column("simple-json", {
     nullable: false,
@@ -39,4 +40,7 @@ export class State extends BaseEntity {
     nullable: false,
   })
   continent!: Continent;
+
+  @OneToOne((type) => StateChannelMessage, (state) => state.state)
+  stateChannelMessage!: StateChannelMessage;
 }

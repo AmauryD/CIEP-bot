@@ -8,6 +8,7 @@ export interface BotConfigObject {
   botUsername: string;
   commandPrefix: string;
   commandChannel: string;
+  statesChannel: string;
 }
 
 export class BotConfig {
@@ -41,6 +42,7 @@ export class BotConfig {
     config.botUsername = parsed!.USERNAME;
     config.commandPrefix = parsed!.COMMAND_PREFIX;
     config.commandChannel = parsed!.COMMAND_CHANNEL;
+    config.statesChannel = parsed!.STATES_CHANNEL;
 
     return (BotConfig._config = config);
   }
