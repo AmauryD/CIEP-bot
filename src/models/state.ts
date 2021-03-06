@@ -5,9 +5,10 @@ import {
   PrimaryColumn,
   Index,
   OneToOne,
+  JoinColumn,
 } from "typeorm";
 import { Continent } from "../enums/continent";
-import { StateChannelMessage } from "./state-channel-message";
+import { ChannelMessage } from "./channel-message";
 
 @Entity()
 export class State extends BaseEntity {
@@ -41,6 +42,18 @@ export class State extends BaseEntity {
   })
   continent!: Continent;
 
-  @OneToOne((type) => StateChannelMessage, (state) => state.state)
-  stateChannelMessage!: StateChannelMessage;
+  @OneToOne((type) => ChannelMessage, (state) => state.state, {
+    nullable: true,
+    onDelete: "SET NULL",
+  })
+  @JoinColumn()
+  channelMessage!: ChannelMessage | null;
+
+  get formated() {
+    return `• ${this.name}\n\t Maire: ${this.mayor}\n\t Adjoint: ${
+      this.adjoints ?? "aucun"
+    }\n\t Coordonnées: (${this.coordinates.x},${
+      this.coordinates.y
+    })\n\t Continent: ${this.continent}`;
+  }
 }
